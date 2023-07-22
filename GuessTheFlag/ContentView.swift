@@ -7,6 +7,26 @@
 
 import SwiftUI
 
+
+struct FlagImage: View {
+    var flagNumber: String
+
+    var body: some View {
+        Image(flagNumber)
+            .renderingMode(.original)
+            .clipShape(Capsule())
+            .shadow(radius: 10)
+    }
+}
+
+struct Title: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.largeTitle)
+            .foregroundColor(.white)
+    }
+}
+
 struct ContentView: View {
     
     @State private var isFlagClicked = false
@@ -14,17 +34,20 @@ struct ContentView: View {
     @State private var endGameTitle = ""
     @State private var correctAnswer = Int.random(in: 0...2)
     @State private var score = 0
-    @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Russia", "Spain", "UK", "US"]
+    @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Monaco", "Nigeria", "Poland", "Russia", "Spain", "UK", "US"]
     @State private var isGameFinished = false
     @State private var currentRound = 1
+    
     let rounds = 8
+    let desaturatedBlue = Color(red: 0.1, green: 0.2, blue: 0.45)
+    let desaturatedRed = Color(red: 0.76, green: 0.15, blue: 0.26)
     
     var body: some View {
         ZStack {
             
             LinearGradient(gradient: Gradient(stops: [
-                    .init(color: Color(red: 0.1, green: 0.2, blue: 0.45), location: 0.33),
-                    .init(color: Color(red: 0.76, green: 0.15, blue: 0.26), location: 0.66),
+                    .init(color: desaturatedBlue, location: 0.33),
+                    .init(color: desaturatedRed, location: 0.66),
                 ]), startPoint: .top, endPoint: .bottom)
             .ignoresSafeArea()
             
@@ -34,8 +57,7 @@ struct ContentView: View {
                 Spacer()
                 
                 Text("Guess the Flag")
-                    .font(.largeTitle)
-                    .foregroundColor(.white)
+                    .modifier(Title())
                 
                 VStack(spacing: 15) {
                     VStack {
@@ -49,10 +71,8 @@ struct ContentView: View {
                         Button {
                             flagTapped(number)
                         } label: {
-                            Image(countries[number])
-                                .renderingMode(.original)
-                                .clipShape(Capsule())
-                                .shadow(radius: 10)
+                            FlagImage(flagNumber: countries[number])
+
                         }
                     }
                 }
@@ -94,6 +114,9 @@ struct ContentView: View {
         }else{
             isFlagClicked = true
         }
+        
+        
+        
     }
     
     func askQuestion(){
