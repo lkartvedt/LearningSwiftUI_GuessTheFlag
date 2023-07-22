@@ -64,7 +64,7 @@ struct ContentView: View {
                         Text("Tap the flag of ")
                             .foregroundStyle(.secondary).font(.subheadline.weight(.heavy))
                         Text(countries[correctAnswer])
-                            .foregroundColor(.black).font(.largeTitle.weight(.semibold))
+                            .foregroundColor(.primary).font(.largeTitle.weight(.semibold))
                     }
                     
                     ForEach(0..<3) { number in
